@@ -1,165 +1,116 @@
-# 🔐 Secure Login System with Express & Next.js
+# Next.js Secure Product Management App
 
-This project is a simple fullstack authentication system built with:
+A secure web application built with **Next.js** (App Router), **Express.js**, and **Prisma**, allowing users to register, log in, and manage their own products (CRUD). Each user can only see and manage the products they created.
 
-- **Backend**: Express.js + JWT Authentication
-- **Frontend**: Next.js (App Router) + TailwindCSS
+## ✨ Features
 
----
+- 🔐 Authentication with JWT (Login & Protected Routes)
+- 👤 Profile Page
+- 📦 CRUD Product (Create, Read, Update, Delete)
+- 📛 User-specific access (each user only sees their own products)
+- 🎨 TailwindCSS for styling
 
-## 📁 Project Structure
+## 📦 Tech Stack
 
-```
-project-root/
-│
-├── backend/
-│   ├── routes/
-│   │   └── auth.js
-│   ├── middleware/
-│   │   └── authMiddleware.js
-│   ├── .env
-│   └── index.js
-│
-└── frontend/
-    ├── src/
-    │   └── app/
-    │       ├── login/
-    │       │   └── page.js
-    │       ├── register/
-    │       │   └── page.js
-    │       └── profile/
-    │           └── page.js
-    ├── tailwind.config.js
-    └── postcss.config.js
-```
+- Frontend: [Next.js](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com)
+- Backend: [Express.js](https://expressjs.com/), [Prisma](https://www.prisma.io/)
+- Database: SQLite / PostgreSQL / MySQL (configurable via Prisma)
+- Auth: JWT-based Authentication
 
 ---
 
 ## 🚀 Getting Started
 
-### 🛠️ Backend Setup (Express)
+### 1. Clone this repository
 
-1. Go to the `backend` folder:
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
 
-   ```bash
-   cd backend
-   ```
+### 2. Install dependencies
 
-2. Install dependencies:
+#### Frontend
 
-   ```bash
-   npm install
-   ```
+```bash
+cd frontend
+npm install
+# or
+yarn
+```
 
-3. Create a `.env` file:
+#### Backend
 
-   ```env
-   JWT_SECRET=your-secret-key
-   PORT=5000
-   ```
-
-4. Run the server:
-
-   ```bash
-   nodemon index.js
-   ```
-
-5. API Endpoints:
-
-   - `POST /api/auth/register` – register a new user
-   - `POST /api/auth/login` – login and receive a JWT token
-   - `GET /api/auth/profile` – protected route that requires JWT
-
----
-
-### 🎨 Frontend Setup (Next.js)
-
-1. Go to the `frontend` folder:
-
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Run the frontend dev server:
-
-   ```bash
-   npm run dev
-   ```
-
-4. App Routes:
-
-   - `http://localhost:3000/register`
-   - `http://localhost:3000/login`
-   - `http://localhost:3000/profile` (protected route)
-
----
-
-## 🔐 Auth Flow
-
-1. **Register** – POST to `/api/auth/register`
-2. **Login** – POST to `/api/auth/login`
-   - Returns JWT token
-   - Token saved to `localStorage`
-3. **Access profile** – GET `/api/auth/profile` using Authorization header
-
----
-
-## 🧪 Example Token Request
-
-```js
-const res = await fetch('http://localhost:5000/api/auth/profile', {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+```bash
+cd backend
+npm install
+# or
+yarn
 ```
 
 ---
 
-## ✅ Features
+### 3. Run the development servers
 
-- JWT-based Authentication
-- Register, Login, and Protected Profile Page
-- CORS enabled for frontend-backend communication
-- Styled using TailwindCSS
-- Built on Next.js App Router (not legacy Pages directory)
+#### Backend
 
----
-
-## 📌 Notes
-
-- Ensure `.env` is created with correct `JWT_SECRET` and `PORT`
-- Add `"use client"` on frontend pages using hooks (`useState`, `useRouter`, etc.)
-- If using **Turbopack**, make sure `app/` structure is complete (no need for `pages/`)
-- If deployed, add production domains to CORS whitelist
-
----
-
-## ✨ Example `.env` File
-
-```env
-JWT_SECRET=mySecretKey
-PORT=5000
+```bash
+cd backend
+npx prisma migrate dev --name init
+npm run dev
 ```
 
+> Backend will run on: `http://localhost:5500`
+
+#### Frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
+> Frontend will run on: `http://localhost:3000`
+
 ---
 
-## 🧼 TODO (optional improvements)
+## 🔑 API Endpoints (Protected with JWT)
 
-- Add persistent login using cookies
-- Add logout functionality (remove token)
-- Add form validation (frontend/backend)
-- Hash passwords (using bcrypt)
-- Connect to MongoDB or other database
+| Method | Endpoint                | Description           |
+|--------|-------------------------|-----------------------|
+| POST   | `/api/auth/register`    | Register new user     |
+| POST   | `/api/auth/login`       | Login user            |
+| GET    | `/api/auth/profile`     | Get user profile      |
+| GET    | `/api/products`         | Get all user products |
+| GET    | `/api/products/:id`     | Get single product    |
+| POST   | `/api/products`         | Create new product    |
+| PUT    | `/api/products/:id`     | Update a product      |
+| DELETE | `/api/products/:id`     | Delete a product      |
+
+> ⚠️ All product endpoints require a valid `Authorization: Bearer <token>` header.
+
+---
+
+## 📁 Folder Structure
+
+```
+frontend/
+  └── app/
+      ├── login/
+      ├── profile/
+      └── products/
+          ├── page.tsx (list)
+          ├── create/
+          └── edit/[id]/
+backend/
+  └── src/
+      ├── controllers/
+      ├── repositories/
+      ├── routes/
+      └── middlewares/
+```
 
 ---
 
 ## 📄 License
 
-MIT License
+This project is open-source and available under the [MIT License](LICENSE).
